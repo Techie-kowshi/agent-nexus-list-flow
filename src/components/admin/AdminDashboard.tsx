@@ -11,6 +11,10 @@ import FloatingStatsCard from '../ui/floating-stats-card';
 import HolographicCard from '../ui/holographic-card';
 import { CyberTabs, CyberTabsList, CyberTabTrigger, CyberTabsContent } from '../ui/cyber-tabs';
 import NeonButton from '../ui/neon-button';
+import AchievementBadge from '../ui/achievement-badge';
+import LevelProgress from '../ui/level-progress';
+import QuestCard from '../ui/quest-card';
+import NeuralNetworkBg from '../ui/neural-network-bg';
 
 interface AdminDashboardProps {
   user: User;
@@ -26,9 +30,37 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
     { label: "AI Success Rate", value: "94.2%", icon: TrendingUpIcon, change: "+2.1% accuracy", color: "text-purple-400" },
   ];
 
+  const adminQuests = [
+    {
+      title: "Network Architect",
+      description: "Deploy 50 agents across all regions",
+      progress: 24,
+      maxProgress: 50,
+      reward: "+2000 XP",
+      difficulty: 'legendary' as const
+    },
+    {
+      title: "Data Master",
+      description: "Process 10,000 tasks successfully",
+      progress: 1847,
+      maxProgress: 10000,
+      reward: "+5000 XP",
+      difficulty: 'legendary' as const
+    },
+    {
+      title: "Efficiency Expert",
+      description: "Achieve 95% success rate across all agents",
+      progress: 94,
+      maxProgress: 95,
+      reward: "+1000 XP",
+      difficulty: 'hard' as const
+    }
+  ];
+
   return (
     <div className="min-h-screen relative overflow-hidden">
       <ParticleBackground />
+      <NeuralNetworkBg />
       
       {/* Matrix-style grid overlay */}
       <div className="absolute inset-0 opacity-10">
@@ -63,15 +95,23 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
                 </p>
               </div>
             </div>
-            <NeonButton 
-              onClick={onLogout} 
-              glowColor="pink" 
-              intensity="medium"
-              className="font-bold tracking-wider"
-            >
-              <LogOutIcon className="w-4 h-4 mr-2" />
-              DISCONNECT
-            </NeonButton>
+            
+            <div className="flex items-center gap-4">
+              <LevelProgress 
+                currentLevel={25}
+                currentXP={4750}
+                nextLevelXP={5000}
+              />
+              <NeonButton 
+                onClick={onLogout} 
+                glowColor="pink" 
+                intensity="medium"
+                className="font-bold tracking-wider"
+              >
+                <LogOutIcon className="w-4 h-4 mr-2" />
+                DISCONNECT
+              </NeonButton>
+            </div>
           </div>
         </div>
         
@@ -80,19 +120,49 @@ const AdminDashboard: React.FC<AdminDashboardProps> = ({ user, onLogout }) => {
       </header>
 
       <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
-        {/* Enhanced Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {stats.map((stat, index) => (
-            <FloatingStatsCard
-              key={index}
-              label={stat.label}
-              value={stat.value}
-              change={stat.change}
-              icon={stat.icon}
-              color={stat.color}
-              delay={index * 150}
-            />
-          ))}
+        {/* Enhanced Stats Cards with Achievements */}
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+          <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8">
+            {stats.map((stat, index) => (
+              <FloatingStatsCard
+                key={index}
+                label={stat.label}
+                value={stat.value}
+                change={stat.change}
+                icon={stat.icon}
+                color={stat.color}
+                delay={index * 150}
+              />
+            ))}
+          </div>
+
+          {/* Admin Achievements Panel */}
+          <HolographicCard
+            title="Command Achievements"
+            description="Your neural mastery"
+            headerClassName="bg-gradient-to-r from-cyan-600 to-purple-600"
+            className="h-fit"
+          >
+            <div className="grid grid-cols-2 gap-3">
+              <AchievementBadge type="leadership" level={10} />
+              <AchievementBadge type="elite" level={5} />
+              <AchievementBadge type="milestone" level={15} />
+              <AchievementBadge type="performance" level={20} />
+            </div>
+          </HolographicCard>
+        </div>
+
+        {/* Admin Quests Section */}
+        <div className="space-y-6">
+          <h2 className="text-2xl font-bold text-cyan-400 flex items-center gap-2">
+            <GamepadIcon className="w-6 h-6" />
+            Command Center Objectives
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {adminQuests.map((quest, index) => (
+              <QuestCard key={index} {...quest} />
+            ))}
+          </div>
         </div>
 
         {/* Enhanced Main Content */}

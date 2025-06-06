@@ -3,7 +3,7 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: 'admin' | 'agent';
+  role: 'admin' | 'agent' | 'sub-agent';
   createdAt?: Date;
 }
 
@@ -35,4 +35,31 @@ export interface TaskDistribution {
   agentName: string;
   tasks: Task[];
   totalTasks: number;
+}
+
+export interface GameStats {
+  level: number;
+  xp: number;
+  achievements: Achievement[];
+  quests: Quest[];
+}
+
+export interface Achievement {
+  id: string;
+  type: 'streak' | 'milestone' | 'performance' | 'leadership' | 'elite';
+  level: number;
+  unlocked: boolean;
+  unlockedAt?: Date;
+}
+
+export interface Quest {
+  id: string;
+  title: string;
+  description: string;
+  progress: number;
+  maxProgress: number;
+  reward: string;
+  difficulty: 'easy' | 'medium' | 'hard' | 'legendary';
+  completed: boolean;
+  type: 'daily' | 'weekly' | 'special';
 }
