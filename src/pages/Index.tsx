@@ -1,12 +1,35 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React, { useState } from 'react';
+import LoginForm from '../components/auth/LoginForm';
+import AdminDashboard from '../components/admin/AdminDashboard';
+import AgentDashboard from '../components/agent/AgentDashboard';
+import { User } from '../types/auth';
 
 const Index = () => {
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [userRole, setUserRole] = useState<'admin' | 'agent' | null>(null);
+
+  const handleLogin = (user: User, role: 'admin' | 'agent') => {
+    setCurrentUser(user);
+    setUserRole(role);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    setUserRole(null);
+  };
+
+  if (!currentUser || !userRole) {
+    return <LoginForm onLogin={handleLogin} />;
+  }
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen bg-background">
+      {userRole === 'admin' ? (
+        <AdminDashboard user={currentUser} onLogout={handleLogout} />
+      ) : (
+        <AgentDashboard user={currentUser} onLogout={handleLogout} />
+      )}
     </div>
   );
 };
